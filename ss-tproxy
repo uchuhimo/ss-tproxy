@@ -597,6 +597,7 @@ tproxy_global*|tproxy_chnroute*)
         iptables -t nat -A SS-TCP -m set --match-set chnroute dst -j RETURN
     fi
     iptables -t nat -A SS-TCP -p tcp -j REDIRECT --to-ports 60080
+    iptables -t nat -A SS-TCP -p icmp -j REDIRECT --to-ports 60080
 
     if [[ "$mode" != *tcp ]]; then
         iptables -t mangle -F PREROUTING
@@ -633,6 +634,7 @@ tproxy_global*|tproxy_chnroute*)
             iptables -t nat -A PREROUTING -p udp -s $intranet ! -d $intranet --dport 53 -j REDIRECT --to-ports 53
             iptables -t mangle -A PREROUTING -p udp -s $intranet -j SS-UDP
             iptables -t nat -A PREROUTING -p tcp -s $intranet -j SS-TCP
+            iptables -t nat -A PREROUTING -p icmp -s $intranet -j SS-TCP
         fi
         iptables -t nat -A POSTROUTING -s $intranet ! -d $intranet -j MASQUERADE
     done
