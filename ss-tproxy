@@ -302,7 +302,7 @@ cache-size = $dnsmasq_cache_size
 min-cache-ttl = $dnsmasq_cache_time
 no-negcache
 no-resolv
-port = 53
+port = $dnsmasq_port
 server = 127.0.0.1#60053
 EOF
 );;
@@ -316,7 +316,7 @@ cache-size = $dnsmasq_cache_size
 min-cache-ttl = $dnsmasq_cache_time
 no-negcache
 no-resolv
-port = 53
+port = $dnsmasq_port
 $(for dns in "${dns_direct[@]}"; do echo "server = $dns"; done)
 $(perl -pe 's@^.*+$@server=/$&/127.0.0.1#60053\nipset=/$&/gfwlist@' $dnsmasq_gfwlist <(
 perl -ne 'print unless m@^\s|\s\n$|^#|^\d++\.\d++\.\d++\.\d++(?:/\d++)?$@' $dnsmasq_gfwlist_ext
@@ -342,7 +342,7 @@ cache-size = $dnsmasq_cache_size
 min-cache-ttl = $dnsmasq_cache_time
 no-negcache
 no-resolv
-port = 53
+port = $dnsmasq_port
 server = 127.0.0.1#65353
 EOF
 );;
@@ -384,7 +384,7 @@ cache-size = $dnsmasq_cache_size
 min-cache-ttl = $dnsmasq_cache_time
 no-negcache
 no-resolv
-port = 53
+port = $dnsmasq_port
 $(for dns in "${dns_direct[@]}"; do echo "server = $dns"; done)
 $(perl -pe 's@^.*+$@server=/$&/127.0.0.1#60053\nipset=/$&/gfwlist@' $dnsmasq_gfwlist <(
 perl -ne 'print unless m@^\s|\s\n$|^#|^\d++\.\d++\.\d++\.\d++(?:/\d++)?$@' $dnsmasq_gfwlist_ext
@@ -439,7 +439,7 @@ cache-size = $dnsmasq_cache_size
 min-cache-ttl = $dnsmasq_cache_time
 no-negcache
 no-resolv
-port = 53
+port = $dnsmasq_port
 server = ${dns_remote/:/#}
 EOF
 );;
@@ -453,7 +453,7 @@ cache-size = $dnsmasq_cache_size
 min-cache-ttl = $dnsmasq_cache_time
 no-negcache
 no-resolv
-port = 53
+port = $dnsmasq_port
 $(for dns in "${dns_direct[@]}"; do echo "server = $dns"; done)
 $(perl -pe "s@^.*+\$@server=/$&/${dns_remote/:/#}\nipset=/$&/gfwlist@" $dnsmasq_gfwlist <(
 perl -ne 'print unless m@^\s|\s\n$|^#|^\d++\.\d++\.\d++\.\d++(?:/\d++)?$@' $dnsmasq_gfwlist_ext
@@ -479,7 +479,7 @@ cache-size = $dnsmasq_cache_size
 min-cache-ttl = $dnsmasq_cache_time
 no-negcache
 no-resolv
-port = 53
+port = $dnsmasq_port
 server = 127.0.0.1#60053
 EOF
 );;
@@ -521,7 +521,7 @@ cache-size = $dnsmasq_cache_size
 min-cache-ttl = $dnsmasq_cache_time
 no-negcache
 no-resolv
-port = 53
+port = $dnsmasq_port
 $(for dns in "${dns_direct[@]}"; do echo "server = $dns"; done)
 $(perl -pe 's@^.*+$@server=/$&/127.0.0.1#60053\nipset=/$&/gfwlist@' $dnsmasq_gfwlist <(
 perl -ne 'print unless m@^\s|\s\n$|^#|^\d++\.\d++\.\d++\.\d++(?:/\d++)?$@' $dnsmasq_gfwlist_ext
