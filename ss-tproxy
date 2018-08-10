@@ -625,6 +625,7 @@ tproxy_global*|tproxy_chnroute*)
     fi
 
     iptables -t nat -A OUTPUT -p tcp -j SS-TCP
+    iptables -t nat -A OUTPUT -p icmp -j SS-TCP
     for intranet in "${iptables_intranet[@]}"; do
         if [[ "$mode" == *tcp ]]; then
             iptables -t nat -A PREROUTING -p tcp -s $intranet -j SS-TCP
