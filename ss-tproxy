@@ -149,7 +149,7 @@ LogOn $dnsfwd_log_on
 LogFileThresholdLength 5242880
 LogFileFolder $dnsfwd_log_dir
 
-UDPLocal 0.0.0.0:53
+UDPLocal 0.0.0.0:$dnsfwd_port
 TCPGroup $dns_remote * no
 BlockNegativeResponse true
 
@@ -180,7 +180,7 @@ LogOn $dnsfwd_log_on
 LogFileThresholdLength 5242880
 LogFileFolder $dnsfwd_log_dir
 
-UDPLocal 0.0.0.0:53
+UDPLocal 0.0.0.0:$dnsfwd_port
 UDPGroup 127.0.0.1:65353 * on
 BlockNegativeResponse true
 
@@ -203,7 +203,7 @@ LogOn $dnsfwd_log_on
 LogFileThresholdLength 5242880
 LogFileFolder $dnsfwd_log_dir
 
-UDPLocal 0.0.0.0:53
+UDPLocal 0.0.0.0:$dnsfwd_port
 TCPGroup $dns_remote * $socks5_listen
 BlockNegativeResponse true
 
@@ -234,7 +234,7 @@ LogOn $dnsfwd_log_on
 LogFileThresholdLength 5242880
 LogFileFolder $dnsfwd_log_dir
 
-UDPLocal 0.0.0.0:53
+UDPLocal 0.0.0.0:$dnsfwd_port
 UDPGroup 127.0.0.1:65353 * on
 BlockNegativeResponse true
 
@@ -353,7 +353,7 @@ LogOn $dnsfwd_log_on
 LogFileThresholdLength 5242880
 LogFileFolder $dnsfwd_log_dir
 
-UDPLocal 0.0.0.0:53
+UDPLocal 0.0.0.0:$dnsfwd_port
 TCPGroup $dns_remote * no
 BlockNegativeResponse true
 
@@ -416,7 +416,7 @@ LogOn $dnsfwd_log_on
 LogFileThresholdLength 5242880
 LogFileFolder $dnsfwd_log_dir
 
-UDPLocal 0.0.0.0:53
+UDPLocal 0.0.0.0:$dnsfwd_port
 UDPGroup 127.0.0.1:65353 * on
 BlockNegativeResponse true
 
@@ -490,7 +490,7 @@ LogOn $dnsfwd_log_on
 LogFileThresholdLength 5242880
 LogFileFolder $dnsfwd_log_dir
 
-UDPLocal 0.0.0.0:53
+UDPLocal 0.0.0.0:$dnsfwd_port
 TCPGroup $dns_remote * $socks5_listen
 BlockNegativeResponse true
 
@@ -553,7 +553,7 @@ LogOn $dnsfwd_log_on
 LogFileThresholdLength 5242880
 LogFileFolder $dnsfwd_log_dir
 
-UDPLocal 0.0.0.0:53
+UDPLocal 0.0.0.0:$dnsfwd_port
 UDPGroup 127.0.0.1:65353 * on
 BlockNegativeResponse true
 
@@ -629,6 +629,7 @@ tproxy_global*|tproxy_chnroute*)
     for intranet in "${iptables_intranet[@]}"; do
         if [[ "$mode" == *tcp ]]; then
             iptables -t nat -A PREROUTING -p tcp -s $intranet -j SS-TCP
+            iptables -t nat -A PREROUTING -p icmp -s $intranet -j SS-TCP
             iptables -t nat -A PREROUTING -p udp -s $intranet ! -d $intranet --dport 53 -j REDIRECT --to-ports 53
         else
             iptables -t mangle -A PREROUTING -p udp -s $intranet ! -d $intranet --dport 53 -j ACCEPT
@@ -900,7 +901,7 @@ case "$mode" in
         fi
         [ $(ss -lnpu | grep ':60053\s' | wc -l) -ne 0 ] && echo -e "dnsforwarder0:     \e[32m[running]\e[0m" || echo -e "dnsforwarder0:     \e[35m[stopped]\e[0m"
         [ $(pgrep -c '^chinadns$') -ne 0 ] && echo -e "chinadns:          \e[32m[running]\e[0m" || echo -e "chinadns:          \e[35m[stopped]\e[0m"
-        [ $(ss -lnpu | grep ':53\s' | wc -l) -ne 0 ] && echo -e "dnsforwarder1:     \e[32m[running]\e[0m" || echo -e "dnsforwarder1:     \e[35m[stopped]\e[0m"
+        [ $(ss -lnpu | grep ":$dnsfwd_port\s" | wc -l) -ne 0 ] && echo -e "dnsforwarder1:     \e[32m[running]\e[0m" || echo -e "dnsforwarder1:     \e[35m[stopped]\e[0m"
         ;;
     tun2socks_global)
         echo "mode:       tun2socks_global"
@@ -949,7 +950,7 @@ case "$mode" in
         [ $(pgrep -c '^tun2socks$') -ne 0 ] && echo -e "tun2socks:         \e[32m[running]\e[0m" || echo -e "tun2socks:         \e[35m[stopped]\e[0m"
         [ $(ss -lnpu | grep ':60053\s' | wc -l) -ne 0 ] && echo -e "dnsforwarder0:     \e[32m[running]\e[0m" || echo -e "dnsforwarder0:     \e[35m[stopped]\e[0m"
         [ $(pgrep -c '^chinadns$') -ne 0 ] && echo -e "chinadns:          \e[32m[running]\e[0m" || echo -e "chinadns:          \e[35m[stopped]\e[0m"
-        [ $(ss -lnpu | grep ':53\s' | wc -l) -ne 0 ] && echo -e "dnsforwarder1:     \e[32m[running]\e[0m" || echo -e "dnsforwarder1:     \e[35m[stopped]\e[0m"
+        [ $(ss -lnpu | grep ":$dnsfwd_port\s" | wc -l) -ne 0 ] && echo -e "dnsforwarder1:     \e[32m[running]\e[0m" || echo -e "dnsforwarder1:     \e[35m[stopped]\e[0m"
         ;;
 esac
 }
