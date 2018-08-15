@@ -572,9 +572,9 @@ esac
 function start_rule {
 case "$mode" in
 tproxy_global*|tproxy_chnroute*)
-    iptables -t nat -F OUTPUT
-    iptables -t nat -F PREROUTING
-    iptables -t nat -F POSTROUTING
+    # iptables -t nat -F OUTPUT
+    # iptables -t nat -F PREROUTING
+    # iptables -t nat -F POSTROUTING
     iptables -t nat -F SS-TCP &>/dev/null
     iptables -t nat -X SS-TCP &>/dev/null
 
@@ -600,7 +600,7 @@ tproxy_global*|tproxy_chnroute*)
     iptables -t nat -A SS-TCP -p icmp -j REDIRECT --to-ports 60080
 
     if [[ "$mode" != *tcp ]]; then
-        iptables -t mangle -F PREROUTING
+        # iptables -t mangle -F PREROUTING
     	iptables -t mangle -F SS-UDP &>/dev/null
     	iptables -t mangle -X SS-UDP &>/dev/null
 
@@ -642,9 +642,9 @@ tproxy_global*|tproxy_chnroute*)
     done
     ;;
 tproxy_gfwlist*)
-    iptables -t nat -F OUTPUT
-    iptables -t nat -F PREROUTING
-    iptables -t nat -F POSTROUTING
+    # iptables -t nat -F OUTPUT
+    # iptables -t nat -F PREROUTING
+    # iptables -t nat -F POSTROUTING
     iptables -t nat -F SS-TCP &>/dev/null
     iptables -t nat -X SS-TCP &>/dev/null
 
@@ -655,7 +655,7 @@ tproxy_gfwlist*)
     iptables -t nat -A SS-TCP -p tcp -m set --match-set gfwlist dst -j REDIRECT --to-ports 60080
 
     if [[ "$mode" != *tcp ]]; then
-        iptables -t mangle -F PREROUTING
+        # iptables -t mangle -F PREROUTING
     	iptables -t mangle -F SS-UDP &>/dev/null
     	iptables -t mangle -X SS-UDP &>/dev/null
 
@@ -681,12 +681,12 @@ tproxy_gfwlist*)
     done
     ;;
 tun2socks_global*|tun2socks_chnroute*)
-    iptables -t mangle -F OUTPUT
-    iptables -t mangle -F PREROUTING
+    # iptables -t mangle -F OUTPUT
+    # iptables -t mangle -F PREROUTING
     iptables -t mangle -F TUN2SOCKS &>/dev/null
     iptables -t mangle -X TUN2SOCKS &>/dev/null
-    iptables -t nat -F PREROUTING
-    iptables -t nat -F POSTROUTING
+    # iptables -t nat -F PREROUTING
+    # iptables -t nat -F POSTROUTING
 
     iptables -t mangle -N TUN2SOCKS
     iptables -t mangle -A TUN2SOCKS -d 0/8 -j RETURN
@@ -728,12 +728,12 @@ tun2socks_global*|tun2socks_chnroute*)
     done
     ;;
 tun2socks_gfwlist*)
-    iptables -t mangle -F OUTPUT
-    iptables -t mangle -F PREROUTING
+    # iptables -t mangle -F OUTPUT
+    # iptables -t mangle -F PREROUTING
     iptables -t mangle -F TUN2SOCKS &>/dev/null
     iptables -t mangle -X TUN2SOCKS &>/dev/null
-    iptables -t nat -F PREROUTING
-    iptables -t nat -F POSTROUTING
+    # iptables -t nat -F PREROUTING
+    # iptables -t nat -F POSTROUTING
 
     iptables -t mangle -N TUN2SOCKS
     ipset -N gfwlist hash:net &>/dev/null
@@ -800,14 +800,14 @@ function stop {
     check_depend
     dns_normal
 
-    iptables -t nat -F OUTPUT            
-    iptables -t nat -F PREROUTING
-    iptables -t nat -F POSTROUTING
+    # iptables -t nat -F OUTPUT            
+    # iptables -t nat -F PREROUTING
+    # iptables -t nat -F POSTROUTING
     iptables -t nat -F SS-TCP &>/dev/null
     iptables -t nat -X SS-TCP &>/dev/null
 
-    iptables -t mangle -F OUTPUT
-    iptables -t mangle -F PREROUTING
+    # iptables -t mangle -F OUTPUT
+    # iptables -t mangle -F PREROUTING
     iptables -t mangle -F SS-UDP &>/dev/null
     iptables -t mangle -X SS-UDP &>/dev/null
     iptables -t mangle -F TUN2SOCKS &>/dev/null
