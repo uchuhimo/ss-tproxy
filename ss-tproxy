@@ -601,8 +601,8 @@ tproxy_global*|tproxy_chnroute*)
 
     if [[ "$mode" != *tcp ]]; then
         # iptables -t mangle -F PREROUTING
-    	iptables -t mangle -F SS-UDP &>/dev/null
-    	iptables -t mangle -X SS-UDP &>/dev/null
+        iptables -t mangle -F SS-UDP &>/dev/null
+        iptables -t mangle -X SS-UDP &>/dev/null
 
         iptables -t mangle -N SS-UDP
         iptables -t mangle -A SS-UDP -d 0/8 -j RETURN
@@ -656,8 +656,8 @@ tproxy_gfwlist*)
 
     if [[ "$mode" != *tcp ]]; then
         # iptables -t mangle -F PREROUTING
-    	iptables -t mangle -F SS-UDP &>/dev/null
-    	iptables -t mangle -X SS-UDP &>/dev/null
+        iptables -t mangle -F SS-UDP &>/dev/null
+        iptables -t mangle -X SS-UDP &>/dev/null
 
         iptables -t mangle -N SS-UDP
         iptables -t mangle -A SS-UDP -p udp -m set --match-set gfwlist dst -j TPROXY --tproxy-mark $iptables_pbr_fwmark --on-ip 127.0.0.1 --on-port 60080
@@ -800,7 +800,7 @@ function stop {
     check_depend
     dns_normal
 
-    # iptables -t nat -F OUTPUT            
+    # iptables -t nat -F OUTPUT
     # iptables -t nat -F PREROUTING
     # iptables -t nat -F POSTROUTING
     iptables -t nat -F SS-TCP &>/dev/null
