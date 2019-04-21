@@ -149,7 +149,7 @@ LogOn $dnsfwd_log_on
 LogFileThresholdLength 5242880
 LogFileFolder $dnsfwd_log_dir
 
-UDPLocal 0.0.0.0:53
+UDPLocal 0.0.0.0:$dnsfwd_port
 TCPGroup $dns_remote * no
 BlockNegativeResponse true
 
@@ -180,7 +180,7 @@ LogOn $dnsfwd_log_on
 LogFileThresholdLength 5242880
 LogFileFolder $dnsfwd_log_dir
 
-UDPLocal 0.0.0.0:53
+UDPLocal 0.0.0.0:$dnsfwd_port
 UDPGroup 127.0.0.1:65353 * on
 BlockNegativeResponse true
 
@@ -203,7 +203,7 @@ LogOn $dnsfwd_log_on
 LogFileThresholdLength 5242880
 LogFileFolder $dnsfwd_log_dir
 
-UDPLocal 0.0.0.0:53
+UDPLocal 0.0.0.0:$dnsfwd_port
 TCPGroup $dns_remote * $socks5_listen
 BlockNegativeResponse true
 
@@ -234,7 +234,7 @@ LogOn $dnsfwd_log_on
 LogFileThresholdLength 5242880
 LogFileFolder $dnsfwd_log_dir
 
-UDPLocal 0.0.0.0:53
+UDPLocal 0.0.0.0:$dnsfwd_port
 UDPGroup 127.0.0.1:65353 * on
 BlockNegativeResponse true
 
@@ -302,7 +302,7 @@ cache-size = $dnsmasq_cache_size
 min-cache-ttl = $dnsmasq_cache_time
 no-negcache
 no-resolv
-port = 53
+port = $dnsmasq_port
 server = 127.0.0.1#60053
 EOF
 );;
@@ -316,7 +316,7 @@ cache-size = $dnsmasq_cache_size
 min-cache-ttl = $dnsmasq_cache_time
 no-negcache
 no-resolv
-port = 53
+port = $dnsmasq_port
 $(for dns in "${dns_direct[@]}"; do echo "server = $dns"; done)
 $(perl -pe 's@^.*+$@server=/$&/127.0.0.1#60053\nipset=/$&/gfwlist@' $dnsmasq_gfwlist <(
 perl -ne 'print unless m@^\s|\s\n$|^#|^\d++\.\d++\.\d++\.\d++(?:/\d++)?$@' $dnsmasq_gfwlist_ext
@@ -342,7 +342,7 @@ cache-size = $dnsmasq_cache_size
 min-cache-ttl = $dnsmasq_cache_time
 no-negcache
 no-resolv
-port = 53
+port = $dnsmasq_port
 server = 127.0.0.1#65353
 EOF
 );;
@@ -353,7 +353,7 @@ LogOn $dnsfwd_log_on
 LogFileThresholdLength 5242880
 LogFileFolder $dnsfwd_log_dir
 
-UDPLocal 0.0.0.0:53
+UDPLocal 0.0.0.0:$dnsfwd_port
 TCPGroup $dns_remote * no
 BlockNegativeResponse true
 
@@ -384,7 +384,7 @@ cache-size = $dnsmasq_cache_size
 min-cache-ttl = $dnsmasq_cache_time
 no-negcache
 no-resolv
-port = 53
+port = $dnsmasq_port
 $(for dns in "${dns_direct[@]}"; do echo "server = $dns"; done)
 $(perl -pe 's@^.*+$@server=/$&/127.0.0.1#60053\nipset=/$&/gfwlist@' $dnsmasq_gfwlist <(
 perl -ne 'print unless m@^\s|\s\n$|^#|^\d++\.\d++\.\d++\.\d++(?:/\d++)?$@' $dnsmasq_gfwlist_ext
@@ -416,7 +416,7 @@ LogOn $dnsfwd_log_on
 LogFileThresholdLength 5242880
 LogFileFolder $dnsfwd_log_dir
 
-UDPLocal 0.0.0.0:53
+UDPLocal 0.0.0.0:$dnsfwd_port
 UDPGroup 127.0.0.1:65353 * on
 BlockNegativeResponse true
 
@@ -439,7 +439,7 @@ cache-size = $dnsmasq_cache_size
 min-cache-ttl = $dnsmasq_cache_time
 no-negcache
 no-resolv
-port = 53
+port = $dnsmasq_port
 server = ${dns_remote/:/#}
 EOF
 );;
@@ -453,7 +453,7 @@ cache-size = $dnsmasq_cache_size
 min-cache-ttl = $dnsmasq_cache_time
 no-negcache
 no-resolv
-port = 53
+port = $dnsmasq_port
 $(for dns in "${dns_direct[@]}"; do echo "server = $dns"; done)
 $(perl -pe "s@^.*+\$@server=/$&/${dns_remote/:/#}\nipset=/$&/gfwlist@" $dnsmasq_gfwlist <(
 perl -ne 'print unless m@^\s|\s\n$|^#|^\d++\.\d++\.\d++\.\d++(?:/\d++)?$@' $dnsmasq_gfwlist_ext
@@ -479,7 +479,7 @@ cache-size = $dnsmasq_cache_size
 min-cache-ttl = $dnsmasq_cache_time
 no-negcache
 no-resolv
-port = 53
+port = $dnsmasq_port
 server = 127.0.0.1#60053
 EOF
 );;
@@ -490,7 +490,7 @@ LogOn $dnsfwd_log_on
 LogFileThresholdLength 5242880
 LogFileFolder $dnsfwd_log_dir
 
-UDPLocal 0.0.0.0:53
+UDPLocal 0.0.0.0:$dnsfwd_port
 TCPGroup $dns_remote * $socks5_listen
 BlockNegativeResponse true
 
@@ -521,7 +521,7 @@ cache-size = $dnsmasq_cache_size
 min-cache-ttl = $dnsmasq_cache_time
 no-negcache
 no-resolv
-port = 53
+port = $dnsmasq_port
 $(for dns in "${dns_direct[@]}"; do echo "server = $dns"; done)
 $(perl -pe 's@^.*+$@server=/$&/127.0.0.1#60053\nipset=/$&/gfwlist@' $dnsmasq_gfwlist <(
 perl -ne 'print unless m@^\s|\s\n$|^#|^\d++\.\d++\.\d++\.\d++(?:/\d++)?$@' $dnsmasq_gfwlist_ext
@@ -553,7 +553,7 @@ LogOn $dnsfwd_log_on
 LogFileThresholdLength 5242880
 LogFileFolder $dnsfwd_log_dir
 
-UDPLocal 0.0.0.0:53
+UDPLocal 0.0.0.0:$dnsfwd_port
 UDPGroup 127.0.0.1:65353 * on
 BlockNegativeResponse true
 
@@ -597,6 +597,7 @@ tproxy_global*|tproxy_chnroute*)
         iptables -t nat -A SS-TCP -m set --match-set chnroute dst -j RETURN
     fi
     iptables -t nat -A SS-TCP -p tcp -j REDIRECT --to-ports 60080
+    iptables -t nat -A SS-TCP -p icmp -j REDIRECT --to-ports 60080
 
     if [[ "$mode" != *tcp ]]; then
         iptables -t mangle -F PREROUTING
@@ -624,15 +625,18 @@ tproxy_global*|tproxy_chnroute*)
     fi
 
     iptables -t nat -A OUTPUT -p tcp -j SS-TCP
+    iptables -t nat -A OUTPUT -p icmp -j SS-TCP
     for intranet in "${iptables_intranet[@]}"; do
         if [[ "$mode" == *tcp ]]; then
             iptables -t nat -A PREROUTING -p tcp -s $intranet -j SS-TCP
+            iptables -t nat -A PREROUTING -p icmp -s $intranet -j SS-TCP
             iptables -t nat -A PREROUTING -p udp -s $intranet ! -d $intranet --dport 53 -j REDIRECT --to-ports 53
         else
             iptables -t mangle -A PREROUTING -p udp -s $intranet ! -d $intranet --dport 53 -j ACCEPT
             iptables -t nat -A PREROUTING -p udp -s $intranet ! -d $intranet --dport 53 -j REDIRECT --to-ports 53
             iptables -t mangle -A PREROUTING -p udp -s $intranet -j SS-UDP
             iptables -t nat -A PREROUTING -p tcp -s $intranet -j SS-TCP
+            iptables -t nat -A PREROUTING -p icmp -s $intranet -j SS-TCP
         fi
         iptables -t nat -A POSTROUTING -s $intranet ! -d $intranet -j MASQUERADE
     done
@@ -897,7 +901,7 @@ case "$mode" in
         fi
         [ $(ss -lnpu | grep ':60053\s' | wc -l) -ne 0 ] && echo -e "dnsforwarder0:     \e[32m[running]\e[0m" || echo -e "dnsforwarder0:     \e[35m[stopped]\e[0m"
         [ $(pgrep -c '^chinadns$') -ne 0 ] && echo -e "chinadns:          \e[32m[running]\e[0m" || echo -e "chinadns:          \e[35m[stopped]\e[0m"
-        [ $(ss -lnpu | grep ':53\s' | wc -l) -ne 0 ] && echo -e "dnsforwarder1:     \e[32m[running]\e[0m" || echo -e "dnsforwarder1:     \e[35m[stopped]\e[0m"
+        [ $(ss -lnpu | grep ":$dnsfwd_port\s" | wc -l) -ne 0 ] && echo -e "dnsforwarder1:     \e[32m[running]\e[0m" || echo -e "dnsforwarder1:     \e[35m[stopped]\e[0m"
         ;;
     tun2socks_global)
         echo "mode:       tun2socks_global"
@@ -946,7 +950,7 @@ case "$mode" in
         [ $(pgrep -c '^tun2socks$') -ne 0 ] && echo -e "tun2socks:         \e[32m[running]\e[0m" || echo -e "tun2socks:         \e[35m[stopped]\e[0m"
         [ $(ss -lnpu | grep ':60053\s' | wc -l) -ne 0 ] && echo -e "dnsforwarder0:     \e[32m[running]\e[0m" || echo -e "dnsforwarder0:     \e[35m[stopped]\e[0m"
         [ $(pgrep -c '^chinadns$') -ne 0 ] && echo -e "chinadns:          \e[32m[running]\e[0m" || echo -e "chinadns:          \e[35m[stopped]\e[0m"
-        [ $(ss -lnpu | grep ':53\s' | wc -l) -ne 0 ] && echo -e "dnsforwarder1:     \e[32m[running]\e[0m" || echo -e "dnsforwarder1:     \e[35m[stopped]\e[0m"
+        [ $(ss -lnpu | grep ":$dnsfwd_port\s" | wc -l) -ne 0 ] && echo -e "dnsforwarder1:     \e[32m[running]\e[0m" || echo -e "dnsforwarder1:     \e[35m[stopped]\e[0m"
         ;;
 esac
 }
