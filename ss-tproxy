@@ -89,7 +89,7 @@ function start_resolver {
             server_addrs+=("/$server/$(ping -nq -c1 -t1 -W1 $server | head -n1 | awk -F'[()]' '{print $2}')")
         fi
     done
-case "$mode" in
+case "$dns_mode" in
 global)
     dnsmasq -C <(cat <<EOF
 $([ "$dnsmasq_log_enable" = 'true' ] && echo 'log-queries')
@@ -367,14 +367,16 @@ global|chnroute)
     iptables -t mangle -A UDPCHAIN -j MARK --set-mark $ipts_rt_mark
 
     iptables -t nat    -A SSTP_OUT -p tcp -j TCPCHAIN
+    iptables -t nat    -A SSTP_OUT -p icmp -j TCPCHAIN
     iptables -t mangle -A SSTP_OUT -p udp -j UDPCHAIN
-    iptables -t nat    -A SSTP_OUT -p udp -d 127.0.0.1 --dport 53 -j REDIRECT --to-ports 60053
+    # iptables -t nat    -A SSTP_OUT -p udp -d 127.0.0.1 --dport 53 -j REDIRECT --to-ports 60053
 
     for intranet in "${ipts_intranet[@]}"; do
         iptables -t mangle -A SSTP_PRE -p udp -s $intranet --dport 53 -m mark ! --mark $ipts_rt_mark -j ACCEPT
-        iptables -t nat    -A SSTP_PRE -p udp -s $intranet --dport 53 -m mark ! --mark $ipts_rt_mark -j REDIRECT --to-ports 60053
+        # iptables -t nat    -A SSTP_PRE -p udp -s $intranet --dport 53 -m mark ! --mark $ipts_rt_mark -j REDIRECT --to-ports 60053
 
         iptables -t nat    -A SSTP_PRE -p tcp -s $intranet                                -j TCPCHAIN
+        iptables -t nat    -A SSTP_PRE -p icmp -s $intranet                                -j TCPCHAIN
         iptables -t mangle -A SSTP_PRE -p udp -s $intranet -m mark ! --mark $ipts_rt_mark -j UDPCHAIN
 
         check_snat_rule
